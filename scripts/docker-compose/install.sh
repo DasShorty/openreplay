@@ -164,7 +164,6 @@ readarray -t services < <(sudo -E "${COMPOSE_CMD[@]}" config --services)
 for service in "${services[@]}"; do
     echo "Pulling image for $service..."
     sudo -E "${COMPOSE_CMD[@]}" pull "$service"
-    sleep 2
 done
 
 COMPOSE_PROFILES=migration sudo -E "${COMPOSE_CMD[@]}" up --force-recreate --build -d

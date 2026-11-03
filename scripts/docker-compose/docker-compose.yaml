@@ -120,7 +120,7 @@ services:
       - -c
       - |
           # Wait for Minio to be ready
-          until bash -c 'echo > /dev/tcp/minio/9000' 2>/dev/null; do
+          until curl -sf http://minio.db.svc.cluster.local:9000/minio/health/live; do
               echo "Waiting for Minio server to be ready..."
               sleep 1
           done
@@ -183,7 +183,7 @@ services:
       - |
           # Checking variable is empty. Shell independant method.
           # Wait for Minio to be ready
-          until nc -z -v -w30 clickhouse-openreplay-clickhouse.db.svc.cluster.local 9000; do
+          until clickhouse-client -h clickhouse-openreplay-clickhouse.db.svc.cluster.local --port 9000 --query "SELECT 1" >/dev/null 2>&1; do
               echo "Waiting for Minio server to be ready..."
               sleep 1
           done
